@@ -3,10 +3,10 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
 export const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   // Valición de campos
-  if (!username || !email || !password) {
+  if (!name || !email || !password) {
     return res.status(400).json({ message: "Faltan campos." });
   }
 
@@ -22,7 +22,7 @@ export const register = async (req, res) => {
 
     // Creación y guardado de el usuario
     const user = await User.create({
-      username,
+      name,
       email,
       password: passwordHash
     });
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
     // Generación de token JWT
     const token = jwt.sign(
       { id: user._id },
-      process.env.SECRET_KEY,
+      process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
     );
 
@@ -46,7 +46,7 @@ export const register = async (req, res) => {
     res.status(201).json({
       user: {
         id: user._id,
-        username: user.username,
+        name: user.name,
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
@@ -55,6 +55,6 @@ export const register = async (req, res) => {
     });
 
   } catch (err) {
-    next(err);
+    console.log(err);
  }
 };
