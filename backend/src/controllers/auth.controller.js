@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   // Valición de campos
@@ -55,6 +55,54 @@ export const register = async (req, res) => {
     });
 
   } catch (err) {
-    console.log(err);
+    next(err);
  }
+};
+
+
+export const login = async (req, res, next) => {
+
+  const {email, password} = req.body;
+  if( !email||!password ) return res.status(400).json('Faltan campos por llenar');
+
+  try {
+
+    // Verificar si el usuario exiate
+    const user = await User.findOne({ email });
+    if ( !user ) return res.status(400).json({message: 'Correo no registrado'});
+  
+    // Comparar la contraseña
+    const isMatch = await bcrypt.compare(password, user.password);
+    if(!isMatch) return res.status(401).json({message: 'Credencial inválida'});
+
+    // Generación de token 
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      {expiresIn: process.env.JWT_EXPIRES_IN || '1d'}
+    );
+
+    // Configuración de cookie segura
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.COOKIE_SECURE === true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+
+    // Respuesta al cliente
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
+      token
+    })
+
+  } catch (error) {
+    next(error);
+  }
 };
