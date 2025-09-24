@@ -106,3 +106,13 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
+export const logout =  async (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.COOKIE_SECURE === true,
+    sameSite: 'lax'
+  });
+
+  res.json({message: 'Sesión cerrada correctamente'});
+};
