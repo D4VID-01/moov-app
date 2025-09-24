@@ -1,4 +1,4 @@
-import Rating from '../models/Rating.js';
+import Rating from '../models/rating.model.js';
 
 // Controlador para crear o actualizar un rating
 export const rate = async (req, res, next) => {
