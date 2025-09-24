@@ -5,6 +5,6 @@ import { authRequired } from "../middlewares/auth.required.js";
 const router = Router();
 
 router.get('/me', authRequired, getProfile);
-router.put('/me', updateProfile);
+router.put('/me', authRequired, updateProfile);
 
 export default router;
