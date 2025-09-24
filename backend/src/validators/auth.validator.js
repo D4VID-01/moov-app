@@ -15,7 +15,6 @@ export const registerValidtor = [
 ];
 
 export const loginValidator = [
-    body('name').notEmpty().withMessage('Correo electrónico inválido'),
-    body('email').isEmail().withMessage('Clave inválida'),
-    
+    body('email').isEmail().withMessage('Correo electrónico inválido'),
+    body('password').notEmpty().withMessage('Clave inválida'),
 ]
