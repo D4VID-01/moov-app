@@ -69,11 +69,11 @@ export const login = async (req, res, next) => {
 
     // Verificar si el usuario exiate
     const user = await User.findOne({ email });
-    if ( !user ) return res.status(400).json({message: 'Correo no registrado'});
+    if ( !user ) return res.status(400).json({message: 'Dirección no registrada'});
   
     // Comparar la contraseña
     const isMatch = await bcrypt.compare(password, user.password);
-    if(!isMatch) return res.status(401).json({message: 'Credencial inválida'});
+    if(!isMatch) return res.status(401).json({message: 'Clave incorrecta'});
 
     // Generación de token 
     const token = jwt.sign(
