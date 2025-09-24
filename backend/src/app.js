@@ -6,6 +6,8 @@ import authRouter from './routes/auth.route.js'
 import userRouter from './routes/user.route.js'
 import tmdbRouter from './routes/tmdb.route.js'
 import ratingRouter from './routes/rating.route.js'
+import favoriteRouter from './routes/favorite.route.js'
+
 
 
 const PORT = process.env.PORT;
@@ -19,6 +21,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/tmdb', tmdbRouter);
 app.use('/api/rating', ratingRouter);
+app.use('/api/favorites', favoriteRouter);
 
 
 await connectDB();
