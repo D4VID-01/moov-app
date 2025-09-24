@@ -31,7 +31,7 @@ export const authRequired = async (req, res, next) => {
         // 8. Todo bien, pasa al siguiente middleware o controlador
         next();
     } catch (error) {
-        console.error('Auth middleware error:', err);
+        console.error('Auth middleware error:', error);
         return res.status(401).json({ message: 'Token invalido o expirado'})
     }
 }
