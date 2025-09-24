@@ -23,5 +23,4 @@ await connectDB();
 
 app.listen(PORT, () => {
     console.log('Servidor corriendo en el puerto ', PORT)
-    console.log('TMDB_KEY cargada:', process.env.TMDB_API_KEY);
 })
